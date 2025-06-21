@@ -12,7 +12,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        return view('index');
+        return view('content.daftar-barang');
     }
 
     /**
@@ -20,7 +20,7 @@ class ItemController extends Controller
      */
     public function create()
     {
-        //
+        return view('content.tambah-barang');
     }
 
     /**

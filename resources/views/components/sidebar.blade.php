@@ -14,11 +14,10 @@
             </a>
             <div class="collapse" id="ui-basic">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">Daftar Barang</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Tambah Barang</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route("items.index") }}">Daftar Barang</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route("items.create") }}">Tambah Barang</a></li>
                 </ul>
             </div>
         </li>
-
     </ul>
 </nav>
