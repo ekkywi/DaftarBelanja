@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\item;
 use Illuminate\Http\Request;
+use App\Models\Item;
 
 class ItemController extends Controller
 {
@@ -12,7 +12,8 @@ class ItemController extends Controller
      */
     public function index()
     {
-        return view('content.daftar-barang');
+        $items = Item::all();
+        return view('content.daftar-barang', compact('items'));
     }
 
     /**
@@ -28,13 +29,21 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|unique:items,name',
+            'quantity' => 'required|integer|min:1',
+            'notes' => 'nullable|string',
+        ]);
+
+        Item::create($validated);
+
+        return redirect()->route("items.index")->with('success', 'Data barang berhasil ditambahkan!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(item $item)
+    public function show(Item $item)
     {
         //
     }
@@ -42,24 +51,33 @@ class ItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(item $item)
+    public function edit(Item $item)
     {
-        //
+        return view('content.edit-barang', compact('item'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, item $item)
+    public function update(Request $request, Item $item)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|unique:items,name,' . $item->id,
+            'quantity' => 'required|integer|min:1',
+            'notes' => 'nullable|string',
+        ]);
+
+        $item->update($validated);
+
+        return redirect()->route('items.index')->with('success', 'Data barang berhasil diupdate!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(item $item)
+    public function destroy(Item $item)
     {
-        //
+        $item->delete();
+        return redirect()->route('items.index')->with('success', 'Data barang berhasil dihapus!');
     }
 }

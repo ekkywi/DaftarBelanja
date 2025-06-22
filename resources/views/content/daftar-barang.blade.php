@@ -15,61 +15,53 @@
 @endsection
 
 @section("content")
-    <div class="col-lg-12 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="card-title mb-0">Daftar Barang Belanja</h4>
-                </div>
-                <p class="card-description">
-                    Add class <code>.table-hover</code>
-                </p>
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Nama Barang</th>
-                                <th>Jumlah Barang</th>
-                                <th>Catatan</th>
-                                <th>Kelola</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Jacob</td>
-                                <td>Photoshop</td>
-                                <td class="text-danger"> 28.76% <i class="ti-arrow-down"></i></td>
-                                <td><label class="badge badge-danger">Pending</label></td>
-                            </tr>
-                            <tr>
-                                <td>Messsy</td>
-                                <td>Flash</td>
-                                <td class="text-danger"> 21.06% <i class="ti-arrow-down"></i></td>
-                                <td><label class="badge badge-warning">In progress</label></td>
-                            </tr>
-                            <tr>
-                                <td>John</td>
-                                <td>Premier</td>
-                                <td class="text-danger"> 35.00% <i class="ti-arrow-down"></i></td>
-                                <td><label class="badge badge-info">Fixed</label></td>
-                            </tr>
-                            <tr>
-                                <td>Peter</td>
-                                <td>After effects</td>
-                                <td class="text-success"> 82.00% <i class="ti-arrow-up"></i></td>
-                                <td><label class="badge badge-success">Completed</label></td>
-                            </tr>
-                            <tr>
-                                <td>Dave</td>
-                                <td>53275535</td>
-                                <td class="text-success"> 98.05% <i class="ti-arrow-up"></i></td>
-                                <td><label class="badge badge-warning">In progress</label></td>
-                            </tr>
-                        </tbody>
-                    </table>
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="card-title mb-0">Daftar Barang Belanja</h4>
+                            </div>
+                            <p class="card-description">
+                                Tampilkan, edit, atau hapus barang belanja Anda di sini.
+                            </p>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Nama Barang</th>
+                                            <th>Jumlah</th>
+                                            <th>Catatan</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($items as $item)
+                                            <tr>
+                                                <td>{{ $item->name }}</td>
+                                                <td>{{ $item->quantity }}</td>
+                                                <td>{{ $item->notes }}</td>
+                                                <td>
+                                                    <a class="btn btn-warning btn-sm" href="{{ route("items.edit", $item->id) }}">Edit</a>
+                                                    <form action="{{ route("items.destroy", $item->id) }}" method="POST" style="display:inline;">
+                                                        @csrf
+                                                        @method("DELETE")
+                                                        <button class="btn btn-danger btn-sm">Hapus</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        @include("components.footer")
     </div>
 @endsection
 
@@ -80,4 +72,27 @@
     <script src="{{ asset("vendors/js/template.js") }}"></script>
     <script src="{{ asset("vendors/js/settings.js") }}"></script>
     <script src="{{ asset("vendors/js/todolist.js") }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (session("success"))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: '{{ session("success") }}',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
+    @if ($errors->any())
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                html: `{!! implode("<br>", $errors->all()) !!}`,
+                showConfirmButton: false,
+                timer: 5000
+            });
+        </script>
+    @endif
 @endsection

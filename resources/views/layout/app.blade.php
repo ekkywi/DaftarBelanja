@@ -24,18 +24,10 @@
             @include("components.sidebar")
 
             {{-- content --}}
-            <div class="main-panel">
-                <div class="content-wrapper">
-                    <div class="row">
-                        @yield("content")
-                    </div>
-                </div>
-
-                {{-- footer --}}
-                @include("components.footer")
-
-            </div>
+            @yield("content")
+            {{-- footer --}}
         </div>
+    </div>
     </div>
 
     {{-- scripts --}}
